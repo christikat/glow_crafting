@@ -187,9 +187,6 @@ RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
             recipes = newUnlocks
         })
         
-        for k, v in pairs(newUnlocks) do
-            print(v.item)
-        end
         currentDefaultRecipes = recipes
         QBCore.Functions.Notify('New recipe unlocked', 'success')
     

@@ -1,12 +1,53 @@
 local QBCore = exports['qb-core']:GetCoreObject()
+local PlayerData = QBCore.Functions.GetPlayerData()
+
+local loadedBenches = false
 local craftingBenches = {}
 local uiSetup = false
 local currentBenchId = nil
+local currentDefaultRecipes = {}
+
+local function getThresholdRecipes()
+    local playerDefaultRecipes = {}
+    local craftingRep = PlayerData.metadata.craftingrep
+    local attachmentRep = PlayerData.metadata.attachmentcraftingrep
+    for k, v in pairs(Config.defaultRecipes) do
+        if v.isAttachment then
+            if attachmentRep >= v.threshold then
+                playerDefaultRecipes[#playerDefaultRecipes + 1] = v
+            end
+        else
+            if craftingRep >= v.threshold then
+                playerDefaultRecipes[#playerDefaultRecipes + 1] = v
+            end
+        end
+    end
+    return playerDefaultRecipes
+end
+
+local function getNewUnlocks(newRecipes, oldRecipes)
+    local temp = {}
+    local unlocks = {}
+    for k, v in pairs(newRecipes) do
+        temp[v.item] = true
+    end
+
+    for k, v in pairs(oldRecipes) do
+        temp[v.item] = nil
+    end
+
+    for k,v in pairs(newRecipes) do
+        if temp[v.item] then
+            unlocks[#unlocks + 1] = v
+        end
+    end
+
+    return unlocks
+end
 
 local function setupUI()
     SendNUIMessage({
         action = "setupUI",
-        recipes = Config.defaultRecipes
     })
 end
 
@@ -27,17 +68,6 @@ local function hideCraftingMenu()
     })
 end
 
-local function getClosestCraftingBench()
-    local playerCoords = GetEntityCoords(PlayerPedId())
-    for k, v in pairs(Config.craftingBenches) do
-        local dist = #(playerCoords - v.coords)
-        if dist < 2.5 then
-            TriggerServerEvent("glow_crafting_sv:getCraftingBenchBlueprints", v.id)
-            break
-        end
-    end
-end
-
 local function spawnObj(model, coords, heading)
     local modelHash = type(model) == 'string' and GetHashKey(model) or model
     if not HasModelLoaded(modelHash) then
@@ -47,7 +77,7 @@ local function spawnObj(model, coords, heading)
         end
     end
 
-    local object = CreateObject(modelHash, coords, false, false, false)
+    local object = CreateObject(modelHash, coords.x, coords.y, coords.z - 1, false, false, false)
     while not DoesEntityExist(object) do
         Wait(10)
     end
@@ -74,8 +104,10 @@ local function spawnObj(model, coords, heading)
 end
 
 local function loadBenches()
-    for k, v in pairs(Config.craftingBenches) do
-        craftingBenches[#craftingBenches + 1] = spawnObj(Config.prop, v.coords, v.heading)
+    if not loadedBenches then
+        for k, v in pairs(Config.craftingBenches) do
+            craftingBenches[#craftingBenches + 1] = spawnObj(Config.prop, v.coords, v.heading)
+        end
     end
 end
 
@@ -114,10 +146,14 @@ RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchDat
                 blueprintRecipes[#blueprintRecipes + 1] = Config.blueprintRecipes[v]
             end
         end
-        
+
+        local defaultRecipes = getThresholdRecipes()
+        currentDefaultRecipes = defaultRecipes
+
         SendNUIMessage({
             action = "displayBlueprints",
-            recipes = blueprintRecipes
+            blueprint = blueprintRecipes,
+            default = defaultRecipes
         })
     end
     
@@ -131,7 +167,33 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     Wait(2000)
+    PlayerData = QBCore.Functions.GetPlayerData()
     loadBenches()
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+    PlayerData = {}
+    currentDefaultRecipes = {}
+    currentBenchId = nil
+end)
+
+RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
+    PlayerData = val
+    local recipes = getThresholdRecipes()
+    if #recipes > #currentDefaultRecipes then
+        local newUnlocks = getNewUnlocks(recipes, currentDefaultRecipes)
+        SendNUIMessage({
+            action = "displayNewRecipes",
+            recipes = newUnlocks
+        })
+        
+        for k, v in pairs(newUnlocks) do
+            print(v.item)
+        end
+        currentDefaultRecipes = recipes
+        QBCore.Functions.Notify('New recipe unlocked', 'success')
+    
+    end
 end)
 
 AddEventHandler('onResourceStop', function(resourceName)

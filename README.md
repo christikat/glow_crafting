@@ -36,8 +36,9 @@ Config.craftingBenches = {
 ```
 
 ## Adding Recipes
-- Items in Config.defaultRecipes do not require blueprints to craft and will automatically appear in the crafting UI
-- Items in Config.blueprintRecipes are unlocked by using blueprint. This table requires and additional value for storing the blueprint image
+- Items in Config.defaultRecipes do not require blueprints to craft and will automatically appear in the crafting UI if the player has enough crafting rep above the items threshold
+
+- Items in Config.blueprintRecipes are unlocked by using blueprint. These recipes do not have any crafting rep requirements, and do not have a threshold value. However, this table requires an additional value for storing the blueprint image
 
 Example of an entry for Config.defaultRecipes
 ```lua
@@ -45,6 +46,9 @@ drill = {
     item = "drill",
     label = "Drill",
     image = "drill.png",
+    isAttachment = false,
+    threshold = 0,
+    points = 1,
     components = {
         {item = "aluminum", label = "Aluminum", amount = 10, image = "aluminum.png"},
         {item = "rubber", label = "Rubber", amount = 10, image = "rubber.png"},
@@ -59,6 +63,8 @@ drill = {
     item = "drill",
     label = "Drill",
     image = "drill.png",
+    isAttachment = false,
+    points = 1,
     components = {
         {item = "aluminum", label = "Aluminum", amount = 10, image = "aluminum.png"},
         {item = "rubber", label = "Rubber", amount = 10, image = "rubber.png"},

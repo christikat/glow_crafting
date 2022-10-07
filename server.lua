@@ -147,6 +147,12 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
+    local rep = Player.PlayerData.metadata.craftingrep
+    local attachmentRep = Player.PlayerData.metadata.attachmentcraftingrep
+    
+    local isAttachment = false
+    local points = 0
+    
     local hasRecipe = false
     local components = nil
     local itemName = nil
@@ -155,17 +161,34 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
         if craftingBenches[benchId] then
             for _, blueprint in ipairs(craftingBenches[benchId].blueprints) do
                 if blueprint == itemToCraft then
+                    local craftData = Config.blueprintRecipes[itemToCraft]
                     hasRecipe = true
-                    components = Config.blueprintRecipes[itemToCraft].components
-                    itemName = Config.blueprintRecipes[itemToCraft].label
+                    points = craftData.points
+                    isAttachment = craftData.isAttachment
+                    components = craftData.components
+                    itemName = craftData.label
                     break
                 end
             end
         end
     else
+        local craftData = Config.defaultRecipes[itemToCraft]
         hasRecipe = true
-        components = Config.defaultRecipes[itemToCraft].components
-        itemName = Config.defaultRecipes[itemToCraft].label
+        points = craftData.points
+        isAttachment = craftData.isAttachment
+    
+        if isAttachment then
+            if attachmentRep < craftData.threshold then
+                return
+            end
+        else
+            if rep < craftData.threshold then
+                return
+            end
+        end
+        
+        components = craftData.components
+        itemName = craftData.label
     end
 
     if hasRecipe and components then
@@ -190,8 +213,14 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
             if Player.Functions.AddItem(itemToCraft, amount) then
                 for _, v in ipairs(playerComponents) do
                     Player.Functions.RemoveItem(v.item, v.takeAmount)
-                end 
-                
+                end
+
+                if isAttachment then
+                    Player.Functions.SetMetaData("attachmentcraftingrep", attachmentRep + (points * amount))
+                else
+                    Player.Functions.SetMetaData("craftingrep", rep + (points * amount))
+                end
+
                 TriggerClientEvent('QBCore:Notify', src, 'Successfully crafted ' ..amount.. ' ' ..itemName..'(s)', 'success')
             end
         else
@@ -225,6 +254,12 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
                     Player.Functions.RemoveItem(v.item, v.requiredPerCraft * maxCraft)
                 end 
                 
+                if isAttachment then
+                    Player.Functions.SetMetaData("attachmentcraftingrep", attachmentRep + (points * maxCraft))
+                else
+                    Player.Functions.SetMetaData("craftingrep", rep + (points * maxCraft))
+                end
+
                 TriggerClientEvent('QBCore:Notify', src, 'Successfully crafted ' ..maxCraft.. ' ' ..itemName..'(s)', 'success')
             end
         end

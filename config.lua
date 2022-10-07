@@ -12,6 +12,9 @@ Config.defaultRecipes = {
         item = "radio",
         label = "Radio",
         image = "radio.png",
+        isAttachment = false,
+        threshold = 0,
+        points = 1,
         components = {
             {item = "aluminum", label = "Aluminum", amount = 10, image = "aluminum.png"},
             {item = "rubber", label = "Rubber", amount = 10, image = "rubber.png"},
@@ -20,12 +23,14 @@ Config.defaultRecipes = {
     },
 }
 
---Recipes that are unlocke with blueprints
+--Recipes that are unlocked with blueprints
 Config.blueprintRecipes = {
     advancedlockpick = {
         item = "advancedlockpick",
         label = "Advanced Lockpick",
         image = "advancedlockpick.png",
+        isAttachment = false,
+        points = 1,
         components = {
             {item = "aluminum", label = "Aluminum", amount = 10, image = "aluminum.png"},
             {item = "rubber", label = "Rubber", amount = 10, image = "rubber.png"},

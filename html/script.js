@@ -78,12 +78,15 @@ function displayBlueprints(recipes) {
         addBlueprint(item);
         displayRecipe(item, true);
     })
+    $(".recipe").fadeIn();
 }
 
 function displayDefaultRecipes(recipes) {
     for (const recipe in recipes) {
         displayRecipe(recipes[recipe], false);
     }
+
+    $(".recipe").fadeIn();
 }
 
 function displayRecipe(craftData, isBlueprint) {
@@ -97,7 +100,7 @@ function displayRecipe(craftData, isBlueprint) {
     });
 
     $("#crafting-recipes").append(`
-        <div class="recipe ${isBlueprint ? "blueprint-recipe": ""}" data-item="${craftData.item}">
+        <div class="recipe ${isBlueprint ? "blueprint-recipe": ""}" data-item="${craftData.item}" style="display: none;">
             <div class="recipe-img">
                 <div class="recipe-text">${craftData.label}</div>
                 <div class="craft-img">
@@ -147,7 +150,7 @@ function clearUI() {
     setTimeout(() => {
         $(".blueprint-text").remove();
         $(".blueprint .craft-img").remove();
-        $(".blueprint-recipe").remove();
+        $(".recipe").remove();
     }, 500)
 }
 
@@ -171,10 +174,13 @@ window.addEventListener("message", function(event) {
             break;
         case "setupUI":
             generateBlueprintSlots();
-            displayDefaultRecipes(item.recipes);
             break;
         case "displayBlueprints":
-            displayBlueprints(item.recipes);
+            displayDefaultRecipes(item.default);
+            displayBlueprints(item.blueprint);
+            break;
+        case "displayNewRecipes":
+            displayDefaultRecipes(item.recipes)
             break;
     }
 })

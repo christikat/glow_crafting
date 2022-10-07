@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+#container {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#crafting-container {
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    width:70vh;
+    overflow: hidden;
+
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    background-color: black;
+    font-size: 2vh;
+    border-radius: 5px;
+}
+
+#crafting-header {
+    font-weight: 900;
+    font-size: 1.8vh;
+    margin: 1vh 1vh 0;
+}
+
+#crafting-side {
+    background-color: black;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2vh;
+    margin-right: 0.5vh;
+    border-radius: 5px;
+    padding: 1vh;
+}
+
+#blueprint-slots {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.blueprint, .recipe-img {
+    position: relative;
+    background-color: rgb(102 102 113 / 30%);
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    margin: 0.2vh;
+
+    height: 13vh;
+    width: 13vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.blueprint-text, .recipe-text {
+    position: absolute;
+    top: 1%;
+    left: 2%;
+    font-size: 1.25vh;
+    font-weight: 400;
+}
+
+.blueprint:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.craft-img {
+    max-width: 100%;
+    max-height: 100%;
+    padding: 0.5vh;
+}
+
+.craft-img img {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 5%;
+    width: auto;
+    height: auto;
+    max-width: 90%;
+    max-height: 100%;
+}
+
+#crafting-recipes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 1vh 2vh 2vh;
+    overflow-y: scroll;
+    gap: 0.4vh;
+
+}
+
+#crafting-recipes::-webkit-scrollbar {
+    display: none;
+}
+
+.recipe {
+    display: flex;
+    background-color: rgba(43, 43, 43, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    height: 14vh;
+}
+
+.recipe:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+.recipe-img {
+    background-color: rgba(39, 39, 39, 0.3);
+    width: 13vh;
+    height: 13vh;
+    margin: 0.5vh;
+}
+
+.recipe-components {
+    overflow-y: scroll;
+    font-size: 1.25vh;
+    font-weight: 400;
+    margin-top: 1vh;
+    margin-left: 1vh;
+}
+
+.recipe-components::-webkit-scrollbar {
+    display: none;
+}
+
+.component {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.6vh;
+}
+
+.component img {
+    width: auto;
+    height: auto;
+    max-width: 2.5vh;
+    max-height: 2.5vh;
+    margin-right: 0.8vh;
+}
+
+#craft, #discard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(30, 30, 30, 1);
+
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5vh;
+    font-weight: 900;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.menu-button {
+    text-align: center;
+    padding: 1vh 2vh;
+    width: 9vh;
+}
+
+#craft-one {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#max-craft {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#discard .menu-button {
+    border-radius: 5px;
+}
+
+.menu-button:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.8);
+}

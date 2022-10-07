@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container" style="display: none;">
+        <div id="crafting-side">
+            <div id="blueprint-slots"></div>
+        </div>
+        <div id="crafting-container">
+            <div id="crafting-header">Crafting Bench</div>
+            <div id="crafting-recipes"></div>
+        </div>
+    </div>
+
+    <div id="craft" class="contextMenu" style="display: none;">
+        <div id="craft-one" class="menu-button" data-craftAmt="1">Craft x1</div>
+        <div id="craft-five" class="menu-button" data-craftAmt="5">Craft x5</div>
+        <div id="craft-ten" class="menu-button" data-craftAmt="10">Craft x10</div>
+        <div id="max-craft" class="menu-button" data-craftAmt="max"><i class="fa-solid fa-up-long"></i> Max Craft</div>
+    </div>
+
+    <div id="discard" class="contextMenu" style="display: none;">
+        <div class="menu-button">Discard</div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

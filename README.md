@@ -6,10 +6,10 @@ This script creates crafting benches and allows players to use blueprints to unl
 
 Crafting benches also come with default crafts that do not require blueprints. These crafts can be locked using qb-core's crafting rep system, and will only appear to the player if they meet those rep requirements.
 
-Each bench's blueprints are not unique to the player and are set globally. Meaning that if player A adds a blueprint, player B will aslo see the blueprint if they access the same crafting bench.
+Each bench's blueprints are not unique to the player and are set globally. Meaning that if player A adds a blueprint, player B will also see the blueprint if they access the same crafting bench.
 
 # Installation
-- Drag and drop into your resouces file and ensure glow_crafting in your server.cfg
+- Drag and drop into your resources file and ensure glow_crafting in your server.cfg
 
 ## Adding Blueprint Items
 - Add blueprint items into qb-core's items.lua, setting ['useable] = true
@@ -40,7 +40,7 @@ Config.craftingBenches = {
 ```
 
 ## Adding Recipes
-- Items in Config.defaultRecipes do not require blueprints to craft and will automatically appear in the crafting UI if the player has enough crafting rep above the items threshold
+- Items in Config.defaultRecipes do not require blueprints to craft and will automatically appear in the crafting UI if the player has enough crafting rep above the item's threshold
 
 - Items in Config.blueprintRecipes are unlocked by using blueprint. These recipes do not have any crafting rep requirements, and do not have a threshold value. However, this table requires an additional value for storing the blueprint image
 

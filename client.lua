@@ -7,6 +7,13 @@ local uiSetup = false
 local currentBenchId = nil
 local currentDefaultRecipes = {}
 
+local function loadAnimDict(dict)
+    while (not HasAnimDictLoaded(dict)) do
+        RequestAnimDict(dict)
+        Wait(5)
+    end
+end
+
 local function getThresholdRecipes()
     local playerDefaultRecipes = {}
     local craftingRep = PlayerData.metadata.craftingrep
@@ -128,12 +135,18 @@ RegisterNUICallback("attemptCraft", function(data, cb)
 end)
 
 RegisterNUICallback("close", function(data, cb)
+    local player = PlayerPedId()
     hideCraftingMenu()
+    StopAnimTask(player, "mini@repair", "fixing_a_player", 1.0)
 end)
 
 RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchData, benchId)
     currentBenchId = benchId
-    
+    local player = PlayerPedId()
+
+    loadAnimDict("mini@repair")
+    TaskPlayAnim(player, "mini@repair", "fixing_a_player", 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+
     if not uiSetup then
         setupUI()
         uiSetup = true

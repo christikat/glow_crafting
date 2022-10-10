@@ -147,12 +147,25 @@ function removeRecipe(item) {
 function clearUI() {
     currentRecipe = null;
     currentBlueprint = null;
+    $("#search").val("");
     setTimeout(() => {
         $(".blueprint-text").remove();
         $(".blueprint .craft-img").remove();
         $(".recipe").remove();
     }, 500)
 }
+
+$("#search").on("keyup", function() {
+    const searchTerm = $(this).val().toLowerCase();
+
+    $(".recipe").each((index, item) => {
+        if ($(item).find(".recipe-img .recipe-text").text().toLowerCase().indexOf(searchTerm) == -1) {
+            $(item).hide();
+        } else {
+            $(item).show();
+        }
+    })
+})
 
 $(document).keyup(function(e){
     if (e.key == "Escape") {

@@ -1,8 +1,12 @@
 # Crafting Script For QbCore
 
-![Crafting UI](https://i.imgur.com/sLJrGWY.png)
+![Crafting UI](https://i.imgur.com/dUocf9m.png)
 
 This script creates crafting benches and allows players to use blueprints to unlock new crafts. Each bench can hold up to 5 blueprints. Players are able to remove blueprints by using qb-target to interact with the crafting bench. This opens up the crafting UI where they can right click on the blueprint they wish to remove. Here players will also be able to right click on crafting recipes to make those items.
+
+Crafting benches also come with default crafts that do not require blueprints. These crafts can be locked using qb-core's crafting rep system, and will only appear to the player if they meet those rep requirements.
+
+Each bench's blueprints are not unique to the player and are set globally. Meaning that if player A adds a blueprint, player B will aslo see the blueprint if they access the same crafting bench.
 
 # Installation
 - Drag and drop into your resouces file and ensure glow_crafting in your server.cfg
@@ -11,7 +15,7 @@ This script creates crafting benches and allows players to use blueprints to unl
 - Add blueprint items into qb-core's items.lua, setting ['useable] = true
 - In order to add functionality to blueprints use the CreateUseableItem function in server.lua
 
-Example with blueprint_advancedlockpick used to craft the advancedlockpick item
+Example with blueprint_advancedlockpick used to craft the advancedlockpick item. Ensure that craftItem matches the key in your config recipes table.
 ```lua
 QBCore.Functions.CreateUseableItem("blueprint_advancedlockpick", function(source)
     local Player = QBCore.Functions.GetPlayer(source)
@@ -26,7 +30,7 @@ end)
 ```
 
 ## Creating Crafting Benches
-- Edit Config.craftingBenches in Config.lua,  ensuring that each id is unique. Follow the format below, to add coords and a heading for each crafting bench
+- Edit Config.craftingBenches in Config.lua, ensuring that each id is unique. Follow the format below, to add coords and a heading for each crafting bench
 
 ```lua
 Config.craftingBenches = {

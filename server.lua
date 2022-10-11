@@ -88,16 +88,16 @@ local function blueprintUsed(src, craftItem)
     end
 end
 
-QBCore.Functions.CreateUseableItem("blueprint_advancedlockpick", function(source)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player.Functions.GetItemByName("blueprint_advancedlockpick") then
-        local craftItem = "advancedlockpick"
-        local addedBlueprint = blueprintUsed(source, craftItem)
-        if addedBlueprint then
-            Player.Functions.RemoveItem("blueprint_advancedlockpick", 1)
-        end
-    end
-end)
+-- QBCore.Functions.CreateUseableItem("blueprint_advancedlockpick", function(source)
+--     local Player = QBCore.Functions.GetPlayer(source)
+--     if Player.Functions.GetItemByName("blueprint_advancedlockpick") then
+--         local craftItem = "advancedlockpick"
+--         local addedBlueprint = blueprintUsed(source, craftItem)
+--         if addedBlueprint then
+--             Player.Functions.RemoveItem("blueprint_advancedlockpick", 1)
+--         end
+--     end
+-- end)
 
 RegisterNetEvent("glow_crafting_sv:getWorkBenchData", function()
     local src = source

@@ -14,10 +14,8 @@ local function loadAnimDict(dict)
     end
 end
 
-local function getThresholdRecipes()
+local function getThresholdRecipes(craftingRep, attachmentRep)
     local playerDefaultRecipes = {}
-    local craftingRep = PlayerData.metadata.craftingrep
-    local attachmentRep = PlayerData.metadata.attachmentcraftingrep
     for k, v in pairs(Config.defaultRecipes) do
         if v.isAttachment then
             if attachmentRep >= v.threshold then
@@ -143,6 +141,8 @@ end)
 RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchData, benchId)
     currentBenchId = benchId
     local player = PlayerPedId()
+    local craftingRep = PlayerData.metadata.craftingrep
+    local attachmentRep = PlayerData.metadata.attachmentcraftingrep
 
     loadAnimDict("mini@repair")
     TaskPlayAnim(player, "mini@repair", "fixing_a_player", 1.0, 1.0, -1, 1, 0, 0, 0, 0)
@@ -160,7 +160,7 @@ RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchDat
             end
         end
 
-        local defaultRecipes = getThresholdRecipes()
+        local defaultRecipes = getThresholdRecipes(craftingRep, attachmentRep)
         currentDefaultRecipes = defaultRecipes
 
         SendNUIMessage({
@@ -168,9 +168,32 @@ RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchDat
             blueprint = blueprintRecipes,
             default = defaultRecipes
         })
+    else
+        local defaultRecipes = getThresholdRecipes(craftingRep, attachmentRep)
+        currentDefaultRecipes = defaultRecipes
+
+        SendNUIMessage({
+            action = "displayBlueprints",
+            blueprint = {},
+            default = defaultRecipes
+        })
     end
-    
+        
     openCraftingMenu()
+end)
+
+RegisterNetEvent("glow_crafting_cl:increasedRep", function(craftingRep, attachmentRep)
+    local recipes = getThresholdRecipes(craftingRep, attachmentRep)
+    if #recipes > #currentDefaultRecipes then
+        local newUnlocks = getNewUnlocks(recipes, currentDefaultRecipes)
+        SendNUIMessage({
+            action = "displayNewRecipes",
+            recipes = newUnlocks
+        })
+        
+        currentDefaultRecipes = recipes
+        QBCore.Functions.Notify('New recipe unlocked', 'success')
+    end
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
@@ -192,18 +215,6 @@ end)
 
 RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
     PlayerData = val
-    local recipes = getThresholdRecipes()
-    if #recipes > #currentDefaultRecipes then
-        local newUnlocks = getNewUnlocks(recipes, currentDefaultRecipes)
-        SendNUIMessage({
-            action = "displayNewRecipes",
-            recipes = newUnlocks
-        })
-        
-        currentDefaultRecipes = recipes
-        QBCore.Functions.Notify('New recipe unlocked', 'success')
-    
-    end
 end)
 
 AddEventHandler('onResourceStop', function(resourceName)

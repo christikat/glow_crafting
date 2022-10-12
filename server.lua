@@ -259,10 +259,10 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
 
                 if isAttachment then
                     Player.Functions.SetMetaData("attachmentcraftingrep", attachmentRep + (points * maxCraft))
-                    TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep, attachmentRep + (points * amount))
+                    TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep, attachmentRep + (points * maxCraft))
                 else
                     Player.Functions.SetMetaData("craftingrep", rep + (points * maxCraft))
-                    TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep + (points * amount), attachmentRep)
+                    TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep + (points * maxCraft), attachmentRep)
                 end
                 TriggerClientEvent('QBCore:Notify', src, 'Successfully crafted ' ..maxCraft.. ' ' ..itemName..'(s)', 'success')
             end

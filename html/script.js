@@ -94,7 +94,7 @@ function displayRecipe(craftData, isBlueprint) {
     craftData.components.forEach(item => {
         componentEl += 
         `<div class="component">
-            <img src="images/${item.image}" alt="">
+            <img src="${item.image}" alt="">
             <div class="component-text">${item.label}: ${item.amount}</div>
         </div>`;
     });
@@ -104,7 +104,7 @@ function displayRecipe(craftData, isBlueprint) {
             <div class="recipe-img">
                 <div class="recipe-text">${craftData.label}</div>
                 <div class="craft-img">
-                    <img src="images/${craftData.image}">
+                    <img src="${craftData.image}">
                 </div>
             </div>
             <div class="recipe-components">
@@ -128,7 +128,7 @@ function addBlueprint(blueprint) {
         emptySlot.append(`
             <div class="blueprint-text" data-blueprint="${blueprint.item}">${blueprint.label} Blueprint</div>
             <div class="craft-img">
-                <img src="images/${blueprint.blueprintImage}">
+                <img src="${blueprint.blueprintImage}">
             </div>`
         )
     }

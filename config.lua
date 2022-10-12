@@ -6,19 +6,25 @@ Config.craftingBenches = {
     {id = "testId", coords = vector3(429.16, 6478.77, 28.79), heading = 140.76},
 }
 
+--[[
+Make sure to change the image path to your inventory image file. Default is lj-inventory, you can change it to qb-inventory by doing this example below:
+    https://cfx-nui-qb-inventory/html/images/radio.png
+]]
+
+
 -- Recipes that come with every workbench
 Config.defaultRecipes = {
     radio = {
         item = "radio",
         label = "Radio",
-        image = "radio.png",
+        image = "https://cfx-nui-lj-inventory/html/images/radio.png", 
         isAttachment = false,
         threshold = 0,
         points = 1,
         components = {
-            {item = "aluminum", label = "Aluminum", amount = 10, image = "aluminum.png"},
-            {item = "rubber", label = "Rubber", amount = 10, image = "rubber.png"},
-            {item = "plastic", label = "Plastic", amount = 10, image = "plastic.png"},
+            {item = "aluminum", label = "Aluminum", amount = 10, image = "https://cfx-nui-lj-inventory/html/images/aluminum.png"},
+            {item = "rubber", label = "Rubber", amount = 10, image = "https://cfx-nui-lj-inventory/html/images/rubber.png"},
+            {item = "plastic", label = "Plastic", amount = 10, image = "https://cfx-nui-lj-inventory/html/images/plastic.png"},
         }
     },
 }
@@ -28,14 +34,14 @@ Config.blueprintRecipes = {
     advancedlockpick = {
         item = "advancedlockpick",
         label = "Advanced Lockpick",
-        image = "advancedlockpick.png",
+        image = "https://cfx-nui-lj-inventory/html/images/advancedlockpick.png",
         isAttachment = false,
         points = 1,
         components = {
-            {item = "aluminum", label = "Aluminum", amount = 10, image = "aluminum.png"},
-            {item = "rubber", label = "Rubber", amount = 10, image = "rubber.png"},
-            {item = "plastic", label = "Plastic", amount = 10, image = "plastic.png"},
+            {item = "aluminum", label = "Aluminum", amount = 10, image = "https://cfx-nui-lj-inventory/html/images/aluminum.png"},
+            {item = "rubber", label = "Rubber", amount = 10, image = "https://cfx-nui-lj-inventory/html/images/rubber.png"},
+            {item = "plastic", label = "Plastic", amount = 10, image = "https://cfx-nui-lj-inventory/html/images/plastic.png"},
         },
-        blueprintImage = "blueprint.png"
+        blueprintImage = "https://cfx-nui-lj-inventory/html/images/blueprint.png"
     },
 }

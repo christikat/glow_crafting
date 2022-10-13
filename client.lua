@@ -107,23 +107,25 @@ local function spawnObj(model, coords, heading, objExists)
             distance = 1.5
         })
     else
-        exports['qb-target']:AddBoxZone("CraftingBench", coords, 0.8, 1.2, {
-            name = "CraftingBench",
-            heading = heading,
-            debugPoly = false,
-            minZ = coords.z-1,
-            maxZ = coords.z+1,
-        }, {
-            options = { {
-                icon = "fa-solid fa-hammer",
-                label = "Craft",
-                action = function()
-                    TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
-                end
-            }
-            },
-            distance = 1.5
-        })
+        if model == 'prop_toolchest_05' then
+            exports['qb-target']:AddBoxZone("BaseCrafting", coords, 0.8, 1.2, {
+                name = "BaseCrafting",
+                heading = heading,
+                debugPoly = false,
+                minZ = coords.z-1,
+                maxZ = coords.z+1,
+            }, {
+                options = { {
+                    icon = "fa-solid fa-hammer",
+                    label = "Craft",
+                    action = function()
+                        TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
+                    end
+                }
+                },
+                distance = 1.5
+            })
+        end
     end
 
    return object

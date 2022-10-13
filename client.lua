@@ -75,37 +75,56 @@ local function hideCraftingMenu()
     })
 end
 
-local function spawnObj(model, coords, heading)
-    local modelHash = type(model) == 'string' and GetHashKey(model) or model
-    if not HasModelLoaded(modelHash) then
-        RequestModel(modelHash)
-        while not HasModelLoaded(modelHash) do
+local function spawnObj(model, coords, heading, objExists)
+    if not objExists then
+        local modelHash = type(model) == 'string' and GetHashKey(model) or model
+        if not HasModelLoaded(modelHash) then
+            RequestModel(modelHash)
+            while not HasModelLoaded(modelHash) do
+                Wait(10)
+            end
+        end
+
+        local object = CreateObject(modelHash, coords.x, coords.y, coords.z - 1, false, false, false)
+        while not DoesEntityExist(object) do
             Wait(10)
         end
+        
+        PlaceObjectOnGroundProperly(object)
+        SetEntityAsMissionEntity(object, true, true)
+        FreezeEntityPosition(object, true)
+        SetEntityHeading(object, heading - 180)
+
+        exports['qb-target']:AddTargetEntity(object, {
+            options = { {
+                icon = "fa-solid fa-hammer",
+                label = "Craft",
+                action = function()
+                    TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
+                end
+            }
+            },
+            distance = 1.5
+        })
+    else
+        exports['qb-target']:AddBoxZone("CraftingBench", coords, 0.8, 1.2, {
+            name = "CraftingBench",
+            heading = heading,
+            debugPoly = false,
+            minZ = coords.z-1,
+            maxZ = coords.z+1,
+        }, {
+            options = { {
+                icon = "fa-solid fa-hammer",
+                label = "Craft",
+                action = function()
+                    TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
+                end
+            }
+            },
+            distance = 1.5
+        })
     end
-
-    local object = CreateObject(modelHash, coords.x, coords.y, coords.z - 1, false, false, false)
-    while not DoesEntityExist(object) do
-        Wait(10)
-    end
-
-    PlaceObjectOnGroundProperly(object)
-    SetEntityAsMissionEntity(object, true, true)
-    FreezeEntityPosition(object, true)
-    SetEntityHeading(object, heading - 180)
-
-
-    exports['qb-target']:AddTargetEntity(object, {
-        options = { {
-             icon = "fa-solid fa-hammer",
-             label = "Craft",
-             action = function()
-                TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
-             end
-        }
-        },
-        distance = 1.5
-   })
 
    return object
 end
@@ -113,7 +132,7 @@ end
 local function loadBenches()
     if not loadedBenches then
         for k, v in pairs(Config.craftingBenches) do
-            craftingBenches[#craftingBenches + 1] = spawnObj(Config.prop, v.coords, v.heading)
+            craftingBenches[#craftingBenches + 1] = spawnObj(v.prop, v.coords, v.heading, v.objExists)
         end
     end
 end

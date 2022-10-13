@@ -17,7 +17,7 @@ end
 local function getThresholdRecipes(craftingRep, attachmentRep)
     local playerDefaultRecipes = {}
     for k, v in pairs(Config.defaultRecipes) do
-        if v.benchId == currentBenchId then
+        if v.benchId == currentBenchId or not v.benchId then
             if v.isAttachment then
                 if attachmentRep >= v.threshold then
                     playerDefaultRecipes[#playerDefaultRecipes + 1] = v

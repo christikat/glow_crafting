@@ -17,13 +17,15 @@ end
 local function getThresholdRecipes(craftingRep, attachmentRep)
     local playerDefaultRecipes = {}
     for k, v in pairs(Config.defaultRecipes) do
-        if v.isAttachment then
-            if attachmentRep >= v.threshold then
-                playerDefaultRecipes[#playerDefaultRecipes + 1] = v
-            end
-        else
-            if craftingRep >= v.threshold then
-                playerDefaultRecipes[#playerDefaultRecipes + 1] = v
+        if v.benchId == currentBenchId then
+            if v.isAttachment then
+                if attachmentRep >= v.threshold then
+                    playerDefaultRecipes[#playerDefaultRecipes + 1] = v
+                end
+            else
+                if craftingRep >= v.threshold then
+                    playerDefaultRecipes[#playerDefaultRecipes + 1] = v
+                end
             end
         end
     end
@@ -156,7 +158,9 @@ RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchDat
         local blueprintRecipes = {}
         for k, v in pairs(craftingBenchData.blueprints) do
             if Config.blueprintRecipes[v] then
-                blueprintRecipes[#blueprintRecipes + 1] = Config.blueprintRecipes[v]
+                if Config.blueprintRecipes[v].benchId == currentBenchId then
+                    blueprintRecipes[#blueprintRecipes + 1] = Config.blueprintRecipes[v]
+                end
             end
         end
 

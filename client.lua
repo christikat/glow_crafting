@@ -14,11 +14,11 @@ local function loadAnimDict(dict)
     end
 end
 
-local function getThresholdRecipes(craftingRep, attachmentRep)
+local function getThresholdRecipes(craftingRep, attachmentRep, benchType)
     local playerDefaultRecipes = {}
     for k, v in pairs(Config.defaultRecipes) do
-        if v.benchId == currentBenchId or not v.benchId then
-            if v.isAttachment then
+        if v.benchType == benchType or not v.benchType then
+            if v.benchType == "attachment" then
                 if attachmentRep >= v.threshold then
                     playerDefaultRecipes[#playerDefaultRecipes + 1] = v
                 end
@@ -162,8 +162,9 @@ RegisterNUICallback("close", function(data, cb)
 end)
 
 RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchData, benchId)
-    currentBenchId = benchId
+    currentBenchId = benchId[1]
     local player = PlayerPedId()
+    local benchType = benchId[2]
     local craftingRep = PlayerData.metadata.craftingrep
     local attachmentRep = PlayerData.metadata.attachmentcraftingrep
 
@@ -179,13 +180,13 @@ RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchDat
         local blueprintRecipes = {}
         for k, v in pairs(craftingBenchData.blueprints) do
             if Config.blueprintRecipes[v] then
-                if Config.blueprintRecipes[v].benchId == currentBenchId then
+                if Config.blueprintRecipes[v].benchType == benchType then
                     blueprintRecipes[#blueprintRecipes + 1] = Config.blueprintRecipes[v]
                 end
             end
         end
 
-        local defaultRecipes = getThresholdRecipes(craftingRep, attachmentRep)
+        local defaultRecipes = getThresholdRecipes(craftingRep, attachmentRep, benchType)
         currentDefaultRecipes = defaultRecipes
 
         SendNUIMessage({
@@ -194,7 +195,7 @@ RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchDat
             default = defaultRecipes
         })
     else
-        local defaultRecipes = getThresholdRecipes(craftingRep, attachmentRep)
+        local defaultRecipes = getThresholdRecipes(craftingRep, attachmentRep, benchType)
         currentDefaultRecipes = defaultRecipes
 
         SendNUIMessage({

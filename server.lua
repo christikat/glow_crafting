@@ -45,7 +45,7 @@ local function getClosestBench(src)
     end
 
     if currentBench then
-        return Config.craftingBenches[currentBench].id
+        return Config.craftingBenches[currentBench].id, Config.craftingBenches[currentBench].benchType
     end
 end
 
@@ -101,7 +101,8 @@ end
 
 RegisterNetEvent("glow_crafting_sv:getWorkBenchData", function()
     local src = source
-    local closestBench = getClosestBench(src)
+    local function getClosestBenchData() return getClosestBench(src) end
+    local closestBench = {getClosestBenchData()}
     if closestBench then
         TriggerClientEvent("glow_crafting_cl:openCraftingBench", src, craftingBenches[closestBench], closestBench)
     else
@@ -150,7 +151,7 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
     local rep = Player.PlayerData.metadata.craftingrep
     local attachmentRep = Player.PlayerData.metadata.attachmentcraftingrep
     
-    local isAttachment = false
+    local benchType = false
     local points = 0
     
     local hasRecipe = false
@@ -164,7 +165,7 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
                     local craftData = Config.blueprintRecipes[itemToCraft]
                     hasRecipe = true
                     points = craftData.points
-                    isAttachment = craftData.isAttachment
+                    benchType = craftData.benchType
                     components = craftData.components
                     itemName = craftData.label
                     break
@@ -175,13 +176,13 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
         local craftData = Config.defaultRecipes[itemToCraft]
         hasRecipe = true
         points = craftData.points
-        isAttachment = craftData.isAttachment
+        benchType = craftData.benchType
     
-        if isAttachment then
+        if benchType == "attachment" then
             if attachmentRep < craftData.threshold then
                 return
             end
-        else
+        elseif benchType == "base" then
             if rep < craftData.threshold then
                 return
             end

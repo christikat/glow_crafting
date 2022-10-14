@@ -22,7 +22,7 @@ local function getThresholdRecipes(craftingRep, attachmentRep, benchType)
                 if attachmentRep >= v.threshold then
                     playerDefaultRecipes[#playerDefaultRecipes + 1] = v
                 end
-            else
+            elseif v.benchType == "base" then
                 if craftingRep >= v.threshold then
                     playerDefaultRecipes[#playerDefaultRecipes + 1] = v
                 end

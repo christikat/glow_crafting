@@ -8,6 +8,11 @@ Crafting benches also come with default crafts that do not require blueprints. T
 
 Each bench's blueprints are not unique to the player and are set globally. Meaning that if player A adds a blueprint, player B will also see the blueprint if they access the same crafting bench.
 
+```
+    #Note for DonHulieo's Update
+    This is christikat's script through and through, I merely added box zones and configured the items
+```
+
 # Installation
 - Drag and drop into your resources file and ensure glow_crafting in your server.cfg
 

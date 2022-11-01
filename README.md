@@ -10,8 +10,10 @@ Each bench's blueprints are not unique to the player and are set globally. Meani
 
 ```
     #Note for DonHulieo's Update
-    This is christikat's script through and through, I merely added box zones and configured the items
+    This is christikat's script through and through, I merely added box zones and configured the items... Hell even the readme is the same as the old and only updated to include my changes. Please if you like this script and want to give it a star, you should give christikat's OP one too :).
 ```
+
+[christikat](https://github.com/christikat/glow_crafting)
 
 # Installation
 - Drag and drop into your resources file and ensure glow_crafting in your server.cfg

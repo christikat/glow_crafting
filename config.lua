@@ -15,7 +15,7 @@ Config.craftingBenches = {
     {id = "pbbase2", coords = vector3(429.16, 6478.77, 28.79), heading = 140.76, objExists = false, prop = 'gr_prop_gr_bench_04b', benchType = 'base'},
     {id = "gsbase", coords = vector3(2135.7, 4771.66, 39.98), heading = 5.35, objExists = true, prop = 'prop_toolchest_05', benchType = 'base'},
     {id = "lmelec", coords = vector3(1272.18, -1710.86, 54.77), heading = 26, objExists = true, prop = 'electronicbench', benchType = 'electronic'},
-    {id = "ssattach", coords = vector3(1539.41, 1699.72, 109.74), heading = 79.24, objExists = false, prop = 'gr_prop_gr_bench_02a', benchType = 'attachment'},
+    {id = "ssattach", coords = vector3(1539.41, 1699.72, 109.74), heading = 257.60, objExists = false, prop = 'gr_prop_gr_bench_02a', benchType = 'attachment'},
     {id = "gsammo", coords = vector3(2130.79, 4765.54, 41.12), heading = 26.21, objExists = false, prop = 'gr_prop_gr_speeddrill_01b', benchType = 'ammo'},
 }
 
@@ -129,7 +129,7 @@ Config.defaultRecipes = {
         }
     },
     -- Ammo Items -- 
-    pistolammo = {
+    pistol_ammo = {
         item = "pistol_ammo",
         label = "Pistol Ammo",
         image = "https://cfx-nui-qb-inventory/html/images/pistol_ammo.png",
@@ -143,11 +143,11 @@ Config.defaultRecipes = {
         }
     },
     -- Weapon Items -- 
-    pistol = {
+    weapon_pistol = {
         item = "weapon_pistol",
-        label = "Pistol Ammo",
+        label = "Pistol",
         image = "https://cfx-nui-qb-inventory/html/images/weapon_pistol.png",
-        benchType = "weapon",
+        benchType = "ammo",
         threshold = 0,
         points = 1,
         components = {
@@ -157,7 +157,7 @@ Config.defaultRecipes = {
         }
     },
     -- Attachment Items --
-    pistolextendclip = {
+    pistol_extendedclip = {
         item = "pistol_extendedclip",
         label = "Pistol Extended Mag",
         image = "https://cfx-nui-qb-inventory/html/images/pistol_extendedclip.png",
@@ -170,7 +170,7 @@ Config.defaultRecipes = {
             {item = "rubber", label = "Rubber", amount = 60, image = "https://cfx-nui-qb-inventory/html/images/plastic.png"},
         }
     },
-    pistolsuppressor = {
+    pistol_suppressor = {
         item = "pistol_suppressor",
         label = "Pistol Suppressor",
         image = "https://cfx-nui-qb-inventory/html/images/pistol_suppressor.png",
@@ -183,7 +183,7 @@ Config.defaultRecipes = {
             {item = "rubber", label = "Rubber", amount = 75, image = "https://cfx-nui-qb-inventory/html/images/plastic.png"},
         }
     },
-    smgextendedclip = {
+    smg_extendedclip = {
         item = "smg_extendedclip",
         label = "SMG Extended Mag",
         image = "https://cfx-nui-qb-inventory/html/images/smg_extendedclip.png",
@@ -196,7 +196,7 @@ Config.defaultRecipes = {
             {item = "rubber", label = "Rubber", amount = 85, image = "https://cfx-nui-qb-inventory/html/images/plastic.png"},
         }
     },
-    microsmgextendedclip = {
+    microsmg_extendedclip = {
         item = "microsmg_extendedclip",
         label = "Micro Extended Mag",
         image = "https://cfx-nui-qb-inventory/html/images/microsmg_extendedclip.png",
@@ -209,7 +209,7 @@ Config.defaultRecipes = {
             {item = "rubber", label = "Rubber", amount = 110, image = "https://cfx-nui-qb-inventory/html/images/plastic.png"},
         }
     },
-    smgdrum = {
+    smg_drum = {
         item = "smg_drum",
         label = "SMG Drum Mag",
         image = "https://cfx-nui-qb-inventory/html/images/smg_drum.png",
@@ -222,7 +222,7 @@ Config.defaultRecipes = {
             {item = "rubber", label = "Rubber", amount = 130, image = "https://cfx-nui-qb-inventory/html/images/plastic.png"},
         }
     },
-    smgscope = {
+    smg_scope = {
         item = "smg_scope",
         label = "SMG Scope",
         image = "https://cfx-nui-qb-inventory/html/images/smg_scope.png",
@@ -235,7 +235,7 @@ Config.defaultRecipes = {
             {item = "rubber", label = "Rubber", amount = 145, image = "https://cfx-nui-qb-inventory/html/images/plastic.png"},
         }
     },
-    assaultrifleextendedclip = {
+    assaultrifle_extendedclip = {
         item = "assaultrifle_extendedclip",
         label = "AR Extended Mag",
         image = "https://cfx-nui-qb-inventory/html/images/assaultrifle_extendedclip.png",
@@ -249,7 +249,7 @@ Config.defaultRecipes = {
             {item = "smg_extendedclip", label = "SMG Extended Mag", amount = 1, image = "https://cfx-nui-qb-inventory/html/images/smg_extendedclip.png"},
         }
     },
-    assaultrifledrum = {
+    assaultrifle_drum = {
         item = "assaultrifle_drum",
         label = "AR Drum Mag",
         image = "https://cfx-nui-qb-inventory/html/images/assaultrifle_extendedclip.png",

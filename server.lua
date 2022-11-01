@@ -187,7 +187,7 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
                 end
             end
         end
-        for k, baseThres in pairs(Config.benchReps.rep)
+        for k, baseThres in pairs(Config.benchReps.rep) do
             if benchType == baseThres then
                 if rep < craftData.threshold then
                     return

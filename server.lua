@@ -88,16 +88,18 @@ local function blueprintUsed(src, craftItem)
     end
 end
 
--- QBCore.Functions.CreateUseableItem("blueprint_advancedlockpick", function(source)
---     local Player = QBCore.Functions.GetPlayer(source)
---     if Player.Functions.GetItemByName("blueprint_advancedlockpick") then
---         local craftItem = "advancedlockpick"
---         local addedBlueprint = blueprintUsed(source, craftItem)
---         if addedBlueprint then
---             Player.Functions.RemoveItem("blueprint_advancedlockpick", 1)
---         end
---     end
--- end)
+-- Blueprint Items --
+
+QBCore.Functions.CreateUseableItem("blueprint_advancedlockpick", function(source)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if Player.Functions.GetItemByName("blueprint_advancedlockpick") then
+        local craftItem = "advancedlockpick"
+        local addedBlueprint = blueprintUsed(source, craftItem)
+        if addedBlueprint then
+            Player.Functions.RemoveItem("blueprint_advancedlockpick", 1)
+        end
+    end
+end)
 
 RegisterNetEvent("glow_crafting_sv:getWorkBenchData", function()
     local src = source
@@ -177,17 +179,22 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
         hasRecipe = true
         points = craftData.points
         benchType = craftData.benchType
-    
-        if benchType == "attachment" then
-            if attachmentRep < craftData.threshold then
-                return
-            end
-        elseif benchType == "base" then
-            if rep < craftData.threshold then
-                return
+
+        for k, attachThres in pairs(Config.benchReps.attachmentRep) do 
+            if benchType == attachThres then
+                if attachmentRep < craftData.threshold then
+                    return
+                end
             end
         end
-        
+        for k, baseThres in pairs(Config.benchReps.rep)
+            if benchType == baseThres then
+                if rep < craftData.threshold then
+                    return
+                end
+            end
+        end
+
         components = craftData.components
         itemName = craftData.label
     end
@@ -212,16 +219,22 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
             end
 
             if Player.Functions.AddItem(itemToCraft, amount) then
+
                 for _, v in ipairs(playerComponents) do
                     Player.Functions.RemoveItem(v.item, v.takeAmount)
                 end
 
-                if isAttachment then
-                    Player.Functions.SetMetaData("attachmentcraftingrep", attachmentRep + (points * amount))
-                    TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep, attachmentRep + (points * amount))
-                else
-                    Player.Functions.SetMetaData("craftingrep", rep + (points * amount))
-                    TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep + (points * amount), attachmentRep)
+                for k, attachRep in pairs(Config.benchReps.attachmentRep) do  
+                    if benchType == attachRep then 
+                        Player.Functions.SetMetaData("attachmentcraftingrep", attachmentRep + (points * amount))
+                        TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep, attachmentRep + (points * amount), benchType)
+                    end
+                end
+                for k, baseRep in pairs(Config.benchReps.rep) do
+                    if benchType == baseRep then 
+                        Player.Functions.SetMetaData("craftingrep", rep + (points * amount))
+                        TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep + (points * amount), attachmentRep, benchType)
+                    end
                 end
 
                 TriggerClientEvent('QBCore:Notify', src, 'Successfully crafted ' ..amount.. ' ' ..itemName..'(s)', 'success')
@@ -254,17 +267,23 @@ RegisterNetEvent("glow_crafting_sv:attemptCraft", function(benchId, itemToCraft,
             end
 
             if Player.Functions.AddItem(itemToCraft, maxCraft) then
+
                 for _, v in ipairs(playerComponents) do
                     Player.Functions.RemoveItem(v.item, v.requiredPerCraft * maxCraft)
-                end 
-
-                if isAttachment then
-                    Player.Functions.SetMetaData("attachmentcraftingrep", attachmentRep + (points * maxCraft))
-                    TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep, attachmentRep + (points * maxCraft))
-                else
-                    Player.Functions.SetMetaData("craftingrep", rep + (points * maxCraft))
-                    TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep + (points * maxCraft), attachmentRep)
                 end
+                for k, attachRep in pairs(Config.benchReps.attachmentRep) do  
+                    if benchType == attachRep then 
+                        Player.Functions.SetMetaData("attachmentcraftingrep", attachmentRep + (points * maxCraft))
+                        TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep, attachmentRep + (points * maxCraft), benchType)
+                    end
+                end
+                for k, baseRep in pairs(Config.benchReps.rep) do
+                    if benchType == baseRep then 
+                        Player.Functions.SetMetaData("craftingrep", rep + (points * maxCraft))
+                        TriggerClientEvent("glow_crafting_cl:increasedRep", src, rep + (points * maxCraft), attachmentRep, benchType)
+                    end
+                end
+
                 TriggerClientEvent('QBCore:Notify', src, 'Successfully crafted ' ..maxCraft.. ' ' ..itemName..'(s)', 'success')
             end
         end

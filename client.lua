@@ -7,6 +7,7 @@ local uiSetup = false
 local currentBenchId = nil
 local currentDefaultRecipes = {}
 
+
 local function loadAnimDict(dict)
     while (not HasAnimDictLoaded(dict)) do
         RequestAnimDict(dict)
@@ -17,14 +18,19 @@ end
 local function getThresholdRecipes(craftingRep, attachmentRep, benchType)
     local playerDefaultRecipes = {}
     for k, v in pairs(Config.defaultRecipes) do
-        if v.benchType == benchType or not v.benchType then
-            if v.benchType == "attachment" then
-                if attachmentRep >= v.threshold then
-                    playerDefaultRecipes[#playerDefaultRecipes + 1] = v
+        if v.benchType == benchType then
+            for k, baseRep in pairs(Config.benchReps.rep) do 
+                if v.benchType == baseRep then
+                    if craftingRep >= v.threshold then
+                        playerDefaultRecipes[#playerDefaultRecipes + 1] = v
+                    end
                 end
-            elseif v.benchType == "base" then
-                if craftingRep >= v.threshold then
-                    playerDefaultRecipes[#playerDefaultRecipes + 1] = v
+            end
+            for k, attachRep in pairs(Config.benchReps.attachmentRep) do
+                if v.benchType == attachRep then
+                    if attachmentRep >= v.threshold then
+                        playerDefaultRecipes[#playerDefaultRecipes + 1] = v
+                    end
                 end
             end
         end
@@ -83,13 +89,13 @@ local function spawnObj(model, coords, heading, objExists)
             while not HasModelLoaded(modelHash) do
                 Wait(10)
             end
-        end
-
+        end 
+       
         local object = CreateObject(modelHash, coords.x, coords.y, coords.z - 1, false, false, false)
         while not DoesEntityExist(object) do
             Wait(10)
         end
-        
+
         PlaceObjectOnGroundProperly(object)
         SetEntityAsMissionEntity(object, true, true)
         FreezeEntityPosition(object, true)
@@ -108,15 +114,103 @@ local function spawnObj(model, coords, heading, objExists)
         })
     else
         if model == 'prop_toolchest_05' then
-            exports['qb-target']:AddBoxZone("BaseCrafting", coords, 0.8, 1.2, {
-                name = "BaseCrafting",
+            if Config.useTargetModels then
+                for k, v in pairs(Config.Models.base) do 
+                    exports['qb-target']:AddTargetModel(v, {
+                        options = { 
+                            {   icon = "fa-solid fa-hammer",
+                                label = "Craft",
+                                action = function()
+                                    TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
+                                end
+                            },
+                        },
+                        distance = 1.5
+                    })
+                end
+            else
+                exports['qb-target']:AddBoxZone("BaseCrafting", coords, 0.8, 1.2, {
+                    name = "BaseCrafting",
+                    heading = heading,
+                    debugPoly = false,
+                    minZ = coords.z-1,
+                    maxZ = coords.z+1,
+                }, {
+                    options = { {
+                        icon = "fa-solid fa-hammer",
+                        label = "Craft",
+                        action = function()
+                            TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
+                        end
+                    }
+                    },
+                    distance = 1.5
+                })
+            end
+        elseif model == 'gr_prop_gr_bench_01a' then
+            exports['qb-target']:AddBoxZone("WeaponCrafting", coords, 1, 4, {
+                name = "WeaponCrafting",
                 heading = heading,
                 debugPoly = false,
-                minZ = coords.z-1,
-                maxZ = coords.z+1,
+                minZ = coords.z-0.8,
+                maxZ = coords.z+1.5,
             }, {
                 options = { {
-                    icon = "fa-solid fa-hammer",
+                    icon = "fa-solid fa-gun",
+                    label = "Craft",
+                    action = function()
+                        TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
+                    end
+                }
+                },
+                distance = 1.5
+            })
+        elseif model == 'gr_prop_gr_speeddrill_01b' then
+            exports['qb-target']:AddBoxZone("AmmoCrafting", coords, 1, 0.6, {
+                name = "AmmoCrafting",
+                heading = heading,
+                debugPoly = false,
+                minZ = coords.z-0.8,
+                maxZ = coords.z+1.8,
+            }, {
+                options = { {
+                    icon = "fa-solid fa-gun",
+                    label = "Craft",
+                    action = function()
+                        TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
+                    end
+                }
+                },
+                distance = 1.5
+            })
+        elseif model == 'gr_prop_gr_bench_02a' then
+            exports['qb-target']:AddBoxZone("AttachmentCrafting", coords, 1, 2, {
+                name = "AttachmentCrafting",
+                heading = heading,
+                debugPoly = false,
+                minZ = coords.z-0.8,
+                maxZ = coords.z+1.5,
+            }, {
+                options = { {
+                    icon = "fa-solid fa-gun",
+                    label = "Craft",
+                    action = function()
+                        TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
+                    end
+                }
+                },
+                distance = 1.5
+            })
+        elseif model == 'electronicbench' then
+            exports['qb-target']:AddBoxZone("ElectronicCrafting", coords, 0.8, 1.4, {
+                name = "ElectronicCrafting",
+                heading = heading,
+                debugPoly = false,
+                minZ = coords.z-0.6,
+                maxZ = coords.z+0.8,
+            }, {
+                options = { {
+                    icon = "fa-solid fa-bolt",
                     label = "Craft",
                     action = function()
                         TriggerServerEvent("glow_crafting_sv:getWorkBenchData")
@@ -180,7 +274,7 @@ RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchDat
         local blueprintRecipes = {}
         for k, v in pairs(craftingBenchData.blueprints) do
             if Config.blueprintRecipes[v] then
-                if Config.blueprintRecipes[v].benchType == benchType then
+                if Config.blueprintRecipes[v].benchType == benchType or not Config.blueprintRecipes[v].benchType then
                     blueprintRecipes[#blueprintRecipes + 1] = Config.blueprintRecipes[v]
                 end
             end
@@ -208,8 +302,8 @@ RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchDat
     openCraftingMenu()
 end)
 
-RegisterNetEvent("glow_crafting_cl:increasedRep", function(craftingRep, attachmentRep)
-    local recipes = getThresholdRecipes(craftingRep, attachmentRep)
+RegisterNetEvent("glow_crafting_cl:increasedRep", function(craftingRep, attachmentRep, benchType)
+    local recipes = getThresholdRecipes(craftingRep, attachmentRep, benchType)
     if #recipes > #currentDefaultRecipes then
         local newUnlocks = getNewUnlocks(recipes, currentDefaultRecipes)
         SendNUIMessage({

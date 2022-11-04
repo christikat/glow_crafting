@@ -274,9 +274,7 @@ RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchDat
         local blueprintRecipes = {}
         for k, v in pairs(craftingBenchData.blueprints) do
             if Config.blueprintRecipes[v] then
-                if Config.blueprintRecipes[v].benchType == benchType or not Config.blueprintRecipes[v].benchType then
-                    blueprintRecipes[#blueprintRecipes + 1] = Config.blueprintRecipes[v]
-                end
+                blueprintRecipes[#blueprintRecipes + 1] = Config.blueprintRecipes[v]
             end
         end
 

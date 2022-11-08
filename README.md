@@ -1,5 +1,8 @@
 # Crafting Script For QbCore
 
+# Known Issues
+- Blueprints currently broken... tutut, who let Donny near this script?
+
 ![Crafting UI](https://i.imgur.com/dUocf9m.png)
 
 This script creates crafting benches and allows players to use blueprints to unlock new crafts. Each bench can hold up to 5 blueprints. Players are able to remove blueprints by using qb-target to interact with the crafting bench. This opens up the crafting UI where they can right click on the blueprint they wish to remove. Here players will also be able to right click on crafting recipes to make those items.

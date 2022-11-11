@@ -152,6 +152,23 @@ RegisterNetEvent("glow_crafting_cl:openCraftingBench", function(craftingBenchDat
         uiSetup = true
     end
 
+    for k, v in pairs(Config.craftingBenches) do
+        if v.id == benchId then
+            if v.disableBlueprints then
+                SendNUIMessage({
+                    action = "showBlueprints",
+                    status = false
+                })
+            else
+                SendNUIMessage({
+                    action = "showBlueprints",
+                    status = true
+                })
+            end
+            break
+        end
+    end
+    
     if craftingBenchData then
         local blueprintRecipes = {}
         for k, v in pairs(craftingBenchData.blueprints) do

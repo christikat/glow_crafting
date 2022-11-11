@@ -3,7 +3,7 @@ Config = {}
 Config.prop = 'gr_prop_gr_bench_04b'
 
 Config.craftingBenches = {
-    {id = "testId", coords = vector3(429.16, 6478.77, 28.79), heading = 140.76},
+    {id = "testId", coords = vector3(429.16, 6478.77, 28.79), heading = 140.76, disableBlueprints = true},
 }
 
 --[[

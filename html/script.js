@@ -195,5 +195,8 @@ window.addEventListener("message", function(event) {
         case "displayNewRecipes":
             displayDefaultRecipes(item.recipes)
             break;
+        case "showBlueprints":
+            item.status ? $("#crafting-side").show() : $("#crafting-side").hide();
+            break;
     }
 })

@@ -52,7 +52,15 @@ end
 local function blueprintUsed(src, craftItem)
     local closestBench = getClosestBench(src)
     if closestBench then
-        
+        for _, v in ipairs(Config.craftingBenches) do
+            if v.id == closestBench then
+                if v.disableBlueprints then
+                    TriggerClientEvent('QBCore:Notify', src, 'Unable to add blueprint to this bench', 'error')
+                    return
+                end
+            end
+        end
+
         if Config.blueprintRecipes[craftItem] then
             local bench = craftingBenches[closestBench]
             if bench then

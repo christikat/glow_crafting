@@ -1,7 +1,7 @@
 # Crafting Script For QbCore
 
 # Known Issues
-- Blueprints currently broken... tutut, who let Donny near this script?
+- Blueprints should be fixed!
 
 ![Crafting UI](https://i.imgur.com/dUocf9m.png)
 

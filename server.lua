@@ -46,7 +46,7 @@ local function getClosestBench(src)
 
     if currentBench then
         local benchID = Config.craftingBenches[currentBench].id
-        TriggerEvent("glow_crafting_sv:getCraftingBenchBlueprints", benchID)
+        -- TriggerEvent("glow_crafting_sv:getCraftingBenchBlueprints", benchID)
         return benchID, Config.craftingBenches[currentBench].benchType
     end
 end

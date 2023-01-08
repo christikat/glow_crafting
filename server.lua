@@ -37,17 +37,17 @@ local function getClosestBench(src)
             if #(playerCoords - bench.coords) < dist then
                 currentBench = index
                 dist = #(playerCoords - bench.coords)
-                TriggerEvent("glow_crafting_sv:getCraftingBenchBlueprints", bench.id)
             end
         elseif #(playerCoords - bench.coords) < minDist then
             currentBench = index
             dist = #(playerCoords - bench.coords)
-            TriggerEvent("glow_crafting_sv:getCraftingBenchBlueprints", bench.id)
         end
     end
 
     if currentBench then
-        return Config.craftingBenches[currentBench].id, Config.craftingBenches[currentBench].benchType
+        local benchID = Config.craftingBenches[currentBench].id
+        TriggerEvent("glow_crafting_sv:getCraftingBenchBlueprints", benchID)
+        return benchID, Config.craftingBenches[currentBench].benchType
     end
 end
 

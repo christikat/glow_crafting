@@ -105,8 +105,8 @@ end)
 
 RegisterNetEvent("glow_crafting_sv:getWorkBenchData", function()
     local src = source
-    -- local function getClosestBenchData() return getClosestBench(src) end
-    local closestBench, benchType = getClosestBench(src)
+    local function getClosestBenchData() return getClosestBench(src) end
+    local closestBench = {getClosestBenchData()}
     if closestBench then
         TriggerClientEvent("glow_crafting_cl:openCraftingBench", src, craftingBenches[closestBench], closestBench)
     else

@@ -79,5 +79,4 @@ drill = {
 ```
 
 ## Adding Images
-- Add images in html/images folder
-- Ensure the name of the image file matches with the image values in Config.defaultRecipes and Config.blueprintRecipes
+- Images can be setup to pull from you inventory script. See config.lua on how to do this. Make sure the the name of your inventory resource matches the name used in the config
